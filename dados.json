@@ -1,0 +1,18 @@
+{
+    "Steam": {
+        "usuario": "Fulano.teste",
+        "senha": "123456789"
+    },
+    "GitHub": {
+        "usuario": "Fulano.teste2",
+        "senha": "64981"
+    },
+    "Jogo": {
+        "usuario": "Jogador1",
+        "senha": "12345"
+    },
+    "Supabase": {
+        "usuario": "Supabase)user1",
+        "senha": "645*67"
+    }
+}
