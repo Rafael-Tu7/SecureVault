@@ -2,7 +2,7 @@ import lib.interface
 import lib.funções
 
 while True:
-    resposta = lib.interface.menu(["Adicionar Senha", "Ver senhas salvas", "Procurar senha", "Sair"])
+    resposta = lib.interface.menu(["Adicionar Senha", "Ver senhas salvas", "Procurar senha", "Bloquear Sistema", "Desbloquear Sistema", "Sair"])
     if resposta == 1:
         lib.funções.adicionarSenha()
 
@@ -16,6 +16,12 @@ while True:
     elif resposta == 4:
         print("Obrigado por usar esse sistema")
         break
+
+    elif resposta == 5:
+        lib.funções.bloquearSistema()
+
+    elif resposta == 6:
+        lib.funções.desbloquearSistema()
 
     else:
         print("Digitre algo válido!")

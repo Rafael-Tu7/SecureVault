@@ -39,6 +39,10 @@ def verSenhas():
     except FileNotFoundError:
         print("Erro ao encontrar arquivo!")
     else:
+        if not dados:
+             print("Nenhuma senha foi registrada!")
+             return
+
         lib.interface.cabeçalho("Suas senhas")
         id = 1
         for servico, info in dados.items():
@@ -46,17 +50,12 @@ def verSenhas():
             print(f"ID = {id}")
             print(f"Serviço: {servico}")
             print(f"Usuário: {info['usuario']}")
-            print(f"Senha: {info['senha']}")
+            print(f"Senha: {descriptografar(info['senha'])}")
             id += 1
             lib.interface.linha()
         
 
 def procurarSenha():
-    lib.interface.linha()
-    lib.interface.cabeçalho("Procure sua senha!")
-    lib.interface.linha()
-
-    senha_procurada = lib.interface.leiaEntrada("Digite o serviço que está procurando sua senha: ")
 
     try:
         with open('dados.json', 'r', encoding='utf-8') as arquivo:
@@ -64,13 +63,28 @@ def procurarSenha():
     except FileNotFoundError:
         print("Erro ao encontrar o arquivo!")
     else:
-        for servico, info in dados.items():
-                    if servico == senha_procurada:
-                        lib.interface.linha()                   
-                        print(f"Serviço: {servico}")
-                        print(f"Usuário: {info['usuario']}")
-                        print(f"Senha: {info['senha']}")
-                        lib.interface.linha()
-                        break
-                    else:
-                         print("Erro ao encontrar serviço!")
+        if not dados:
+            print("Nenhuma senha foi registrada!")
+            return
+        
+        else: 
+            lib.interface.linha()
+            lib.interface.cabeçalho("Procure sua senha!")
+            lib.interface.linha()
+
+            senha_procurada = lib.interface.leiaEntrada("Digite o serviço que está procurando sua senha: ")
+            
+            for servico, info in dados.items():
+                        if servico == senha_procurada:
+                            lib.interface.linha()                   
+                            print(f"Serviço: {servico}")
+                            print(f"Usuário: {info['usuario']}")
+                            print(f"Senha: {descriptografar(info['senha'])}")
+                            lib.interface.linha()
+                            break
+            else:
+                print("Erro ao encontrar serviço!")
+
+
+#def bloquearSistema():
+     
