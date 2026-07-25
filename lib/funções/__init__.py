@@ -1,5 +1,4 @@
 import json
-import pyperclip
 import json
 import lib.interface
 from lib.criptografia import criptografar, descriptografar
