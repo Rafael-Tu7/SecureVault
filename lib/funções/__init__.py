@@ -1,5 +1,8 @@
 import json
+import pyperclip
+import json
 import lib.interface
+from lib.criptografia import criptografar, descriptografar
 
 def adicionarSenha():
     lib.interface.cabeçalho("Adicionar senha")
@@ -7,7 +10,7 @@ def adicionarSenha():
     print("")
     servico = lib.interface.leiaEntrada("Digite o nome do serviço: ")
     usuario = lib.interface.leiaEntrada("Digite o seu usuário: ")
-    senha = lib.interface.leiaEntrada("Digite sua senha: ")
+    senha = criptografar(lib.interface.leiaEntrada("Digite sua senha: "))
 
     senhas_usuario = {
         "usuario": usuario,
@@ -43,9 +46,10 @@ def verSenhas():
             print(f"ID = {id}")
             print(f"Serviço: {servico}")
             print(f"Usuário: {info['usuario']}")
-            lib.interface.linha()
+            print(f"Senha: {info['senha']}")
             id += 1
-
+            lib.interface.linha()
+        
 
 def procurarSenha():
     lib.interface.linha()

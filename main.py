@@ -1,6 +1,3 @@
-from cryptography.fernet import Fernet
-import json
-import pyperclip
 import lib.interface
 import lib.funções
 
@@ -10,8 +7,8 @@ while True:
         lib.funções.adicionarSenha()
 
     elif resposta == 2:
-        a = lib.funções.verSenhas()
-        print(a)
+        lib.funções.verSenhas()
+        x = input("\nPressione ENTER para voltar ao menu!")
 
     elif resposta == 3:
         lib.funções.procurarSenha()
