@@ -1,7 +1,8 @@
 import json
-import json
 import lib.interface
 from lib.criptografia import criptografar, descriptografar
+import os
+import bcrypt
 
 def adicionarSenha():
     lib.interface.cabeçalho("Adicionar senha")
@@ -26,8 +27,8 @@ def adicionarSenha():
     lista_senhas[servico] = senhas_usuario
 
     # Salvar lista atualizada
-    with open('dados.json', 'w') as arquivo:
-         json.dump(lista_senhas, arquivo, indent=4)
+    with open('dados.json', 'w', encoding='utf-8') as arquivo:
+         json.dump(lista_senhas, arquivo, indent=4, ensure_ascii=False)
 
 
 
@@ -85,5 +86,47 @@ def procurarSenha():
                 print("Erro ao encontrar serviço!")
 
 
-#def bloquearSistema():
-     
+def senhaMestraExiste():
+    return os.path.exists("auth.dat")
+
+def criarSenhaMestra():
+    while True:
+        senha = input("Crie uma senha mestre: ")
+        confirme_senha = input("Confirme sua senha: ")
+        
+        if senha == confirme_senha:
+            hash_senha = bcrypt.hashpw(senha.encode(), bcrypt.gensalt())
+            with open('auth.dat', 'wb') as arquivo:
+                arquivo.write(hash_senha)
+                print("Senha mestre criada com sucesso")
+            break
+            
+        else:
+            print("As senhas devem ser iguais!")
+
+
+def carregarSenhaMestra():
+    with open('auth.dat', 'rb') as arquivo:
+        return arquivo.read()
+
+def desbloquearSistema():
+    password = input("Digite sua senha: ")
+    hash_salvo = carregarSenhaMestra()
+
+    if bcrypt.checkpw(password.encode(), hash_salvo):
+        print("Cofre desbloqueado!")
+        return True
+    else:
+        print("Senha incorreta!")
+        return False
+
+
+def bloquearSistema():
+    decisao_user = input("Você tem certeza que deseja bloquear o cofre? (S ou N): ").lower()
+
+    if decisao_user == 's':
+        print("Cofre bloqueado!")
+        return False
+    else:
+        print("Operação cancelada!")
+        return True
