@@ -57,13 +57,10 @@ Algumas melhorias previstas para as próximas versões são:
 
 * edição de senhas;
 * exclusão de senhas;
-* gerador de senhas seguras;
-* organização por categorias;
-* favoritos;
 * interface gráfica.
 
 ## Objetivo
 
-Este projeto foi criado com o objetivo de praticar conceitos de programação em Python, como modularização, manipulação de arquivos, criptografia, hash de senhas, tratamento de exceções e utilização do Git e GitHub.
+Este projeto foi criado com o objetivo de praticar conceitos de programação em Python, como modularização, manipulação de arquivos, criptografia, tratamento de exceções e utilização do Git e GitHub.
 
 Todo o desenvolvimento foi feito de forma incremental, adicionando novas funcionalidades e melhorando a estrutura do projeto a cada versão.
