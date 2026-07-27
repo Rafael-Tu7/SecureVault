@@ -15,7 +15,7 @@ else:
 
            
                 while True:
-                    resposta = lib.interface.menu(["Adicionar Senha", "Ver senhas salvas", "Procurar senha", "Bloquear Sistema", "Sair"])
+                    resposta = lib.interface.menu(["Adicionar Senha", "Ver senhas salvas", "Procurar senha", "Editar senha", "Excluir senha", "Bloquear Sistema", "Sair"])
                     if resposta == 1:
                         lib.funções.adicionarSenha()
 
@@ -27,12 +27,18 @@ else:
                         lib.funções.procurarSenha()
 
                     elif resposta == 4:
+                        lib.funções.editarSenha()
+
+                    elif resposta == 5:
+                        lib.funções.excluirSenha()
+
+                    elif resposta == 6:
                        bloqueado = lib.funções.bloquearSistema()
                        if bloqueado == False:
                             print("Sistema bloqueado!")
                             break
 
-                    elif resposta == 5:
+                    elif resposta == 7:
                         print("Voltando para o menu principal...")
                         break           
 

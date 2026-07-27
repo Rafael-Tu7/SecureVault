@@ -3,6 +3,14 @@ import lib.interface
 from lib.criptografia import criptografar, descriptografar
 import os
 import bcrypt
+import secrets
+import string
+
+def gerarSenha():
+    tamanho = int(input("Digite o número de carcteres que deve ter sua senha: "))
+    caracteres = string.ascii_letters + string.digits + string.punctuation
+    senha = ''.join(secrets.choice(caracteres) for _ in range(tamanho))
+    return senha
 
 def adicionarSenha():
     lib.interface.cabeçalho("Adicionar senha")
@@ -10,7 +18,15 @@ def adicionarSenha():
     print("")
     servico = lib.interface.leiaEntrada("Digite o nome do serviço: ")
     usuario = lib.interface.leiaEntrada("Digite o seu usuário: ")
-    senha = criptografar(lib.interface.leiaEntrada("Digite sua senha: "))
+
+    opcao = input("Deseja gerar uma senha automaticamente? (S ou N): ").lower()
+
+    if opcao == 's':
+        senha_gerada = gerarSenha()
+        print(f"Senha gerada: {senha_gerada}")
+        senha = criptografar(senha_gerada)
+    else:
+        senha = criptografar(lib.interface.leiaEntrada("Digite sua senha: "))
 
     senhas_usuario = {
         "usuario": usuario,
@@ -130,3 +146,77 @@ def bloquearSistema():
     else:
         print("Operação cancelada!")
         return True
+
+def editarSenha():
+    try:
+        with open('dados.json', 'r', encoding='utf-8') as arquivo:
+            dados = json.load(arquivo)
+    except (FileNotFoundError):
+        print("Nenhuma senha foi registrada!")
+        return
+
+    if not dados:
+        print("Nenhuma senha foi registrada!")
+        return
+
+    lib.interface.cabeçalho("Editar senha")
+    lib.interface.linha()
+
+    servico_procurado = lib.interface.leiaEntrada("Digite o servilo que deseja alterar senha: ")
+    if servico_procurado not in dados:
+        print("Serviço não encontrado")
+        return
+
+    print(f"\nEditando: {servico_procurado}")
+    print(f"Usuário atual: {dados[servico_procurado]['usuario']}")
+
+    novo_usuario = lib.interface.leiaEntrada("Novo usuário (ENTER para manter o atual): ")
+    nova_senha = lib.interface.leiaEntrada("Nova senha (ENTER para manter a atual): ")
+
+    if novo_usuario:
+        dados[servico_procurado]['usuario'] = novo_usuario
+
+    if nova_senha:
+        dados[servico_procurado]['senha'] = criptografar(nova_senha)
+
+    with open('dados.json', 'w', encoding='utf-8') as arquivo:
+        json.dump(dados, arquivo, indent=4, ensure_ascii=False)
+
+    print("Senha atualizada com sucesso!")
+
+
+def excluirSenha():
+    try:
+        with open('dados.json', 'r', encoding='utf-8') as arquivo:
+            dados = json.load(arquivo)
+    except (FileNotFoundError, json.JSONDecodeError):
+        print("Nenhuma senha foi registrada!")
+        return
+
+    if not dados:
+        print("Nenhuma senha foi registrada!")
+        return
+
+    lib.interface.cabeçalho("Excluir senha")
+    lib.interface.linha()
+
+    servico_procurado = lib.interface.leiaEntrada("Digite o serviço que deseja excluir: ")
+
+    if servico_procurado not in dados:
+        print("Serviço não encontrado!")
+        return
+
+    print(f"\nServiço: {servico_procurado}")
+    print(f"Usuário: {dados[servico_procurado]['usuario']}")
+
+    confirmacao = input("Tem certeza que deseja excluir essa senha? (S ou N): ").lower()
+
+    if confirmacao == 's':
+        del dados[servico_procurado]
+
+        with open('dados.json', 'w', encoding='utf-8') as arquivo:
+            json.dump(dados, arquivo, indent=4, ensure_ascii=False)
+
+        print("Senha excluída com sucesso!")
+    else:
+        print("Operação cancelada!")
